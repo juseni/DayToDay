@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-import daytoday.composeapp.generated.resources.Res
-import daytoday.composeapp.generated.resources.compose_multiplatform
+import org.juseni.daytoday.resources.Res
+import org.juseni.daytoday.resources.compose_multiplatform
 
 @Composable
 @Preview
