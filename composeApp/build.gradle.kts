@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -14,6 +15,7 @@ plugins {
 
 kotlin {
     androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -58,6 +60,8 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.contentnegotiation)
             implementation(libs.ktor.serialization.json)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
 
         iosMain.dependencies {
@@ -98,14 +102,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    dependencies {
+        debugImplementation(compose.uiTooling)
+    }
 }
 
 room {
     schemaDirectory("$projectDir/schemas")
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
 }
 
 buildConfig {
