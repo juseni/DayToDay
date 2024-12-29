@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import org.juseni.daytoday.domain.models.User
 
 interface UserRepository {
-    fun getUserById(userId: Int): Flow<User?>
+    fun getUser(): Flow<User?>
     suspend fun insertUser(user: User)
+    suspend fun deleteUser()
+
 }

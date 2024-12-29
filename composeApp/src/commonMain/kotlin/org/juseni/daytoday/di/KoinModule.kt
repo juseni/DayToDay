@@ -11,11 +11,24 @@ import org.juseni.daytoday.BuildConfig
 import org.juseni.daytoday.data.db.getRoomDatabase
 import org.juseni.daytoday.data.db.repositories.UserRepositoryImpl
 import org.juseni.daytoday.data.network.ApiService
+import org.juseni.daytoday.data.network.CurrencyApiServer
+import org.juseni.daytoday.data.network.repositories.NetworkRepositoryImpl
 import org.juseni.daytoday.data.sharedpreferences.createDataStore
+import org.juseni.daytoday.data.sharedpreferences.repositories.DataStoreRepositoryImpl
+import org.juseni.daytoday.domain.repositories.DataStoreRepository
+import org.juseni.daytoday.domain.repositories.NetworkRepository
 import org.juseni.daytoday.domain.repositories.UserRepository
+import org.juseni.daytoday.ui.viewmodels.HomeScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.LoginScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.ConsolidatedScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.IncomesScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.NewApartmentScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.NewBillScreenViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -29,26 +42,34 @@ val sharedModule = module {
 
     // Repositories
     single<UserRepository> { UserRepositoryImpl(get()) }
+    single<DataStoreRepository> { DataStoreRepositoryImpl(get()) }
+    single<NetworkRepository> { NetworkRepositoryImpl(get(), get(), get()) }
 
     // ViewModels
+    viewModelOf(::LoginScreenViewModel)
+    viewModelOf(::HomeScreenViewModel)
+    viewModelOf(::ConsolidatedScreenViewModel)
+    viewModelOf(::NewBillScreenViewModel)
+    viewModelOf(::NewApartmentScreenViewModel)
+    viewModelOf(::IncomesScreenViewModel)
 
 }
 
 val networkModule = module {
 
-    factory { ApiService(get()) }
+    factoryOf(::CurrencyApiServer)
+    factoryOf(::ApiService)
 
     single<HttpClient> {
         HttpClient {
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
+                json(Json { ignoreUnknownKeys = true })
             }
             install(DefaultRequest) {
                 headers {
                     append("apikey", BuildConfig.API_KEY)
                 }
+
                 url {
                     protocol = URLProtocol.HTTPS
                     host = BuildConfig.URL_HOST
@@ -61,6 +82,7 @@ val networkModule = module {
 val appModule = module {
     single(named("apiKey")) { BuildConfig.API_KEY }
     single { BuildConfig.URL_HOST }
+    single { BuildConfig.URL_HOST_CURRENCY_EXCHANGE }
 }
 
 fun initializeKoin(
@@ -68,6 +90,6 @@ fun initializeKoin(
 ) {
     startKoin {
         config?.invoke(this)
-        modules(targetModule, sharedModule, preferenceModule, networkModule, appModule)
+        modules(networkModule, targetModule, sharedModule, preferenceModule, appModule)
     }
 }

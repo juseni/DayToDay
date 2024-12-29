@@ -43,7 +43,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -118,9 +118,11 @@ buildConfig {
     properties.load(project.rootProject.file("local.properties").reader())
     val apiKey = properties.getProperty("API_KEY")
     val urlHost = properties.getProperty("URL_HOST")
+    val urlHostCurrencyExchange = properties.getProperty("URL_HOST_CURRENCY_EXCHANGE")
 
     buildConfigField("API_KEY", apiKey)
     buildConfigField("URL_HOST", urlHost)
+    buildConfigField("URL_HOST_CURRENCY_EXCHANGE", urlHostCurrencyExchange)
 }
 
 dependencies {

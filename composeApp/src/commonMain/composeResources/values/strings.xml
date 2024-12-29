@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Day by day</string>
+
+    <!-- Login screen-->
+    <string name="login_information">Already have an account?</string>"
+    <string name="sing_up_information">New user?</string>
+    <string name="sing_up">Sing up</string>
+    <string name="login">Login</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="end_session">End session</string>"
+    <string name="welcome_information">Fill in the information below</string>
+    <string name="remember_me">Remember me</string>"
+    <string name="auto_logging">Auto logging</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="options_information">Select what options you want to enable</string>
+    <string name="option_bills">Daily Bills</string>
+    <string name="option_income_expenses">Rent and utilities</string>
+    <string name="login_in_error">Error logging in, Try again later</string>
+
+    <!-- Home screen-->
+    <string name="consolidated">Monthly consolidated</string>
+    <string name="new_bill">New bill</string>
+    <string name="incomes">Incomes</string>
+    <string name="expenses">Expenses</string>
+    <string name="new_apartment">New Apartment</string>
+
+    <!-- Months screen-->
+    <string name="month_screen_title">Monthly consolidated</string>
+    <string name="month_screen_info">Select the month you want to see</string>
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_march">March</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+    <string name="year_filter">Select the year you want to see</string>
+
+    <!-- Consolidated screen-->
+    <string name="tag_supermarket">Supermarket</string>
+    <string name="tag_store">Store</string>
+    <string name="tag_market_place">Public market</string>
+    <string name="tag_others">Others</string>
+    <string name="tag_epm">EPM</string>
+    <string name="tag_cellphone">Cellphone</string>
+    <string name="tag_internet">Internet</string>
+    <string name="tag_credit_card">Credit card</string>
+    <string name="tag_health">Health</string>
+    <string name="tag_public_transportation">Public transportation</string>
+    <string name="tag_restaurant">Restaurant</string>
+    <string name="tag_atm">ATM</string>
+    <string name="tag_error">Error</string>
+    <string name="detail_date">Date</string>
+    <string name="detail_amount">Amount</string>
+    <string name="detail_description">Description</string>
+    <string name="total_incomes">Total incomes</string>
+
+<!-- New bill screen-->
+    <string name="new_bill_screen_title">New bill</string>
+    <string name="new_bill_screen_info">Fill in the information below</string>
+    <string name="new_bill_success">Bill saved successfully</string>
+    <string name="new_bill_error">Error saving bill, Try again later</string>
+    <string name="new_bill_date">Date</string>
+    <string name="new_bill_amount">Amount</string>
+    <string name="new_bill_amount_label">Add bill amount</string>
+    <string name="new_bill_description">Description</string>
+    <string name="new_bill_description_label">Add bill Description</string>
+    <string name="new_bill_tag">Tag</string>
+    <string name="new_bill_add_date">Add date</string>
+    <string name="new_bill_modify_date">Modify date</string>
+    <string name="new_bill_add_tag">Add tag</string>
+    <string name="new_bill_modify_tag">Modify tag</string>
+    <string name="new_bill_insert_new_bill">Add new bill</string>
+    <string name="new_bill_go_to_montly_screen">Go to monthly consolidated</string>
+
+    <!-- New apartment screen-->
+    <string name="new_apartment_screen_title">New apartment</string>
+    <string name="new_apartment_screen_info">Fill in the information below</string>
+    <string name="new_apartment_name">Name</string>
+    <string name="new_apartment_number">Number</string>
+    <string name="new_apartment_percentage">Percentage</string>
+    <string name="new_apartment_is_direct">Is direct</string>
+    <string name="new_apartment_error">Error saving apartment, Try again later</string>
+
+    <!-- Incomes screen-->
+    <string name="incomes_screen_title">Incomes</string>
+    <string name="incomes_screen_info">Fill in the information below</string>
+    <string name="incomes_screen_error">Error saving income, Try again later</string>
+    <string name="incomes_screen_type">Income type</string>
+    <string name="incomes_screen_rent">Rent</string>
+    <string name="incomes_screen_choose_apartment">Choose apartment</string>
+    <string name="incomes_screen_sale">Sale</string>
+    <string name="incomes_screen_sale_description">Sale description</string>
+    <string name="incomes_screen_rent_type">Rent type</string>
+    <string name="incomes_screen_currency">Select currency</string>
+    <string name="incomes_screen_convert">Convert currency</string>
+    <string name="incomes_screen_amount">Amount</string>
+    <string name="incomes_screen_apartment">Apartment</string>
+
+
+
+<!-- Common strings-->
+    <string name="total_amount">Total amount</string>
+    <string name="warning_no_records">There are no records to show at this moment</string>
+    <string name="save">Save</string>"
+    <string name="saving">Saving...</string>
+    <string name="saved_successfully">Saved successfully</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit">Exit</string>
+    <string name="error_getting_apartments">Error getting apartments, Try again later</string>
+    <string name="yes_label">Yes</string>
+    <string name="no_label">No</string>
+    <string name="see_detail_label">See detail</string>
+</resources>

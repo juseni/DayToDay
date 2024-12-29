@@ -7,7 +7,7 @@ import org.juseni.daytoday.domain.models.User
 
 @Entity(tableName = "users")
 data class UserEntity(
-    @PrimaryKey(autoGenerate = false) val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int = 0,
     @ColumnInfo(name = "user") val user: String,
     @ColumnInfo(name = "password") val password: String,
     @ColumnInfo(name = "has_bills") val hasBills: Boolean,
