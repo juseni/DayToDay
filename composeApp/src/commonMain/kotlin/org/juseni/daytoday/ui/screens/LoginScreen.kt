@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.painterResource
@@ -48,6 +49,8 @@ import org.juseni.daytoday.domain.models.User
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.app_name
 import org.juseni.daytoday.resources.auto_logging
+import org.juseni.daytoday.resources.ic_close_eye
+import org.juseni.daytoday.resources.ic_eye
 import org.juseni.daytoday.resources.login
 import org.juseni.daytoday.resources.login_information
 import org.juseni.daytoday.resources.option_bills
@@ -62,7 +65,6 @@ import org.juseni.daytoday.resources.welcome_information
 import org.juseni.daytoday.ui.ScreenRoute
 import org.juseni.daytoday.ui.components.DayToDayTopAppBar
 import org.juseni.daytoday.ui.components.ErrorLogin
-import org.juseni.daytoday.ui.components.ErrorScreenComponent
 import org.juseni.daytoday.ui.components.FullProgressIndicator
 import org.juseni.daytoday.ui.components.LabelledCheckBox
 import org.juseni.daytoday.ui.components.LoggingProgressIndicator
@@ -232,6 +234,7 @@ fun LoginInformation(
     val password = remember { mutableStateOf(user?.password ?: "") }
     val hasBills = remember { mutableStateOf(false) }
     val hasIncomeExpenses = remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -272,17 +275,29 @@ fun LoginInformation(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Password
         TextField(
             value = password.value,
             onValueChange = { password.value = it },
             label = { Text(text = stringResource(Res.string.password)) },
-            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
             ),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            leadingIcon = {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(
+                            if (passwordVisible) Res.drawable.ic_close_eye else Res.drawable.ic_eye
+                        ),
+                        contentDescription = "Toggle password visibility"
+                    )
+                }
+            },
             trailingIcon = {
                 IconButton(
                     onClick = {
