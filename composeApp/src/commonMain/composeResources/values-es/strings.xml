@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Día a día</string>
+
+    <!-- Login screen-->
+    <string name="login_information">Ya tienes una cuenta?</string>"
+    <string name="sing_up_information">Nuevo usuario?</string>
+    <string name="sing_up">Crear cuenta</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="end_session">Cerrar sesión</string>"
+    <string name="welcome_information">Llena los datos solicitados</string>
+    <string name="remember_me">Recordar datos</string>"
+    <string name="auto_logging">Inicio de sesión automático</string>
+    <string name="logging_in">Iniciando sesión...</string>
+    <string name="options_information">Seleccione las opciones que quiera habilitar</string>
+    <string name="option_bills">Facturas diarias</string>
+    <string name="option_income_expenses">Renta y utilidades</string>
+    <string name="login_in_error">Error iniciando sesión, Intente de nuevo más tarde</string>
+
+    <!-- Home screen-->
+    <string name="consolidated">Consolidado Mensual</string>
+    <string name="new_bill">Nueva factura</string>
+    <string name="incomes">Ingresos</string>
+    <string name="expenses">Egresos</string>
+    <string name="new_apartment">Nuevo apartamento</string>
+
+    <!-- Months screen-->
+    <string name="month_screen_title">Consolidado mensual</string>
+    <string name="month_screen_info">Seleccione el mes que quiera ver</string>
+    <string name="month_january">Enero</string>
+    <string name="month_february">Febrero</string>
+    <string name="month_march">Marzo</string>
+    <string name="month_april">Abril</string>
+    <string name="month_may">Mayo</string>
+    <string name="month_june">Junio</string>
+    <string name="month_july">Julio</string>
+    <string name="month_august">Agosto</string>
+    <string name="month_september">Septiembre</string>
+    <string name="month_october">Octubre</string>
+    <string name="month_november">Noviembre</string>
+    <string name="month_december">Diciembre</string>
+
+    <!-- Consolidated screen-->
+    <string name="tag_supermarket">Supermercado</string>
+    <string name="tag_store">Tienda</string>
+    <string name="tag_market_place">Plaza de mercado</string>
+    <string name="tag_others">Otros</string>
+    <string name="tag_epm">EPM</string>
+    <string name="tag_cellphone">Celular</string>
+    <string name="tag_internet">Internet</string>
+    <string name="tag_credit_card">Tarjeta de crédito</string>
+    <string name="tag_health">Salud</string>
+    <string name="tag_public_transportation">Transporte público</string>
+    <string name="tag_restaurant">Restaurante</string>
+    <string name="tag_atm">Retiro cajero</string>
+    <string name="tag_error">Error</string>
+    <string name="detail_date">Fecha</string>
+    <string name="detail_amount">Valor</string>
+    <string name="detail_description">Descripción</string>
+
+    <!-- New bill screen-->
+    <string name="new_bill_screen_title">Nueva Factura</string>
+    <string name="new_bill_screen_info">Ingrese los datos solicitados</string>
+    <string name="new_bill_success">Factura guardada exitosamente</string>
+    <string name="new_bill_error">Error al guardar la factura, Intente de nuevo más tarde</string>
+    <string name="new_bill_date">Fecha</string>
+    <string name="new_bill_amount">Valor</string>
+    <string name="new_bill_amount_label">Ingrese el valor de la factura</string>
+    <string name="new_bill_description">Descripción</string>
+    <string name="new_bill_description_label">Ingrese la descripción de la factura</string>
+    <string name="new_bill_tag">Categoría</string>
+    <string name="new_bill_add_date">Ingresar fecha</string>
+    <string name="new_bill_modify_date">Modificar fecha</string>
+    <string name="new_bill_add_tag">Ingresar categoría</string>
+    <string name="new_bill_modify_tag">Modificar categoría</string>
+    <string name="new_bill_insert_new_bill">Ingresar nueva factura</string>
+    <string name="new_bill_go_to_montly_screen">Ir a consolidado Mensual</string>
+
+
+    <!-- Common strings-->
+    <string name="total_amount">Valor total</string>
+    <string name="warning_no_records">No hay registros para mostrar en este momento</string>
+    <string name="save">Guardar</string>
+    <string name="saving">Guardando...</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="exit">Salir</string>
+</resources>

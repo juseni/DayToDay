@@ -1,8 +1,11 @@
 package org.juseni.daytoday.data.db.repositories
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.juseni.daytoday.data.db.DayToDayDatabase
+import org.juseni.daytoday.data.db.entities.toUser
 import org.juseni.daytoday.domain.models.User
+import org.juseni.daytoday.domain.models.toUserEntity
 import org.juseni.daytoday.domain.repositories.UserRepository
 
 class UserRepositoryImpl(
@@ -10,11 +13,10 @@ class UserRepositoryImpl(
 ): UserRepository {
     private val userDao by lazy { database.userDao() }
 
-    override fun getUserById(userId: Int): Flow<User?> {
-        TODO("Not yet implemented")
-    }
+    override fun getUser(): Flow<User?> =
+        userDao.getUser().map { it?.toUser() }
 
     override suspend fun insertUser(user: User) {
-        TODO("Not yet implemented")
+        userDao.insertUser(user.toUserEntity())
     }
 }
