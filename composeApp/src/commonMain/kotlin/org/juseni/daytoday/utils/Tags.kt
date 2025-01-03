@@ -34,20 +34,25 @@ import org.juseni.daytoday.resources.tag_salary
 import org.juseni.daytoday.resources.tag_store
 import org.juseni.daytoday.resources.tag_supermarket
 
-enum class Tags(val id: Int, val tagName: StringResource, val icon: DrawableResource) {
-    SUPERMARKET(1, Res.string.tag_supermarket, Res.drawable.ic_supermarket),
-    STORE(2, Res.string.tag_store, Res.drawable.ic_store),
-    PUBLIC_MARKET(3, Res.string.tag_market_place, Res.drawable.ic_market_place),
-    OTHER(4, Res.string.tag_others, Res.drawable.ic_others),
-    EPM(5, Res.string.tag_epm, Res.drawable.ic_epm),
-    CELLPHONE(6, Res.string.tag_cellphone, Res.drawable.ic_cellphone),
-    INTERNET(7, Res.string.tag_internet, Res.drawable.ic_internet),
-    CREDIT_CARD(8, Res.string.tag_credit_card, Res.drawable.ic_credit_card),
-    HEALTH(9, Res.string.tag_health, Res.drawable.ic_health),
-    PUBLIC_TRANSPORTATION(10, Res.string.tag_public_transportation, Res.drawable.ic_public_transport),
-    RESTAURANT(11, Res.string.tag_restaurant, Res.drawable.ic_restaurant),
-    ATM(12, Res.string.tag_atm, Res.drawable.ic_atm),
-    CAR(13, Res.string.tag_car, Res.drawable.ic_car),
-    SALARY(14, Res.string.tag_salary, Res.drawable.ic_salary),
-    COMMISSION(15, Res.string.tag_commission, Res.drawable.ic_commission),
+enum class Tags(
+    val id: Int,
+    val tagName: StringResource,
+    val icon: DrawableResource,
+    val isVisible: Boolean
+) {
+    SUPERMARKET(1, Res.string.tag_supermarket, Res.drawable.ic_supermarket, true),
+    STORE(2, Res.string.tag_store, Res.drawable.ic_store, true),
+    PUBLIC_MARKET(3, Res.string.tag_market_place, Res.drawable.ic_market_place, true),
+    OTHER(4, Res.string.tag_others, Res.drawable.ic_others, true),
+    EPM(5, Res.string.tag_epm, Res.drawable.ic_epm, true),
+    CELLPHONE(6, Res.string.tag_cellphone, Res.drawable.ic_cellphone, true),
+    INTERNET(7, Res.string.tag_internet, Res.drawable.ic_internet, true),
+    CREDIT_CARD(8, Res.string.tag_credit_card, Res.drawable.ic_credit_card, true),
+    HEALTH(9, Res.string.tag_health, Res.drawable.ic_health, true),
+    PUBLIC_TRANSPORTATION(10, Res.string.tag_public_transportation, Res.drawable.ic_public_transport, true),
+    RESTAURANT(11, Res.string.tag_restaurant, Res.drawable.ic_restaurant, true),
+    ATM(12, Res.string.tag_atm, Res.drawable.ic_atm, true),
+    CAR(13, Res.string.tag_car, Res.drawable.ic_car, true),
+    SALARY(14, Res.string.tag_salary, Res.drawable.ic_salary, false),
+    COMMISSION(15, Res.string.tag_commission, Res.drawable.ic_commission, false),
 }

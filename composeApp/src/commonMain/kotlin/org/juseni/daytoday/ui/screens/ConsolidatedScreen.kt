@@ -42,11 +42,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.domain.models.Bill
-import org.juseni.daytoday.domain.models.Income
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.detail_amount
 import org.juseni.daytoday.resources.detail_date
@@ -180,17 +180,27 @@ fun ConsolidatedScreenContent(
                                     defaultElevation = 6.dp
                                 ),
                             ) {
-                                Row(
+                                Column(
                                     modifier = Modifier.fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
+                                        .padding(bottom = 16.dp)
                                 ) {
-                                    Text(text = stringResource(Res.string.total_incomes))
-                                    Text(text = totalIncomes.formatDouble())
-                                    TextButton(onClick = onSeeIncomeDetailClicked) {
-                                        Text(text = stringResource(Res.string.see_detail_label))
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(text = stringResource(Res.string.total_incomes))
+                                        TextButton(onClick = onSeeIncomeDetailClicked) {
+                                            Text(text = stringResource(Res.string.see_detail_label))
+                                        }
                                     }
+                                    Text(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                        text = totalIncomes.formatDouble(),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
                                 }
                             }
                         }

@@ -24,6 +24,7 @@ ktor = "3.0.2"
 buildConfig = "5.3.5"
 androidx-room = "2.7.0-alpha08"
 androidx-sqliteBundled = "2.5.0-alpha08"
+core-splashscreen = "1.0.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -54,6 +55,7 @@ ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlin
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 androidx-sqlite-bundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
+core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "core-splashscreen" }
 
 
 
