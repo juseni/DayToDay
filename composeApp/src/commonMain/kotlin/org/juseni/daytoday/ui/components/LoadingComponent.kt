@@ -19,8 +19,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.exit
 import org.juseni.daytoday.resources.logging_in
-import org.juseni.daytoday.resources.new_bill_go_to_montly_screen
-import org.juseni.daytoday.resources.new_bill_insert_new_bill
+import org.juseni.daytoday.resources.saved_successfully
 import org.juseni.daytoday.resources.saving
 
 @Composable
@@ -63,8 +62,10 @@ fun LoggingProgressIndicator() {
 @Composable
 fun SavingProgressIndicator(
     showActions: Boolean,
-    onNewBillClicked: () -> Unit,
-    onGoToMonthlyScreenClicked: () -> Unit,
+    onNewText: String,
+    secondActionText: String? = null,
+    onNewClicked: () -> Unit,
+    onSecondActionClicked: () -> Unit = {},
     onExitClicked: () -> Unit
 ) {
     AlertDialog(
@@ -75,18 +76,16 @@ fun SavingProgressIndicator(
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(Res.string.saving)
+                    text = if (showActions) {
+                        stringResource(Res.string.saved_successfully)
+                    } else {
+                        stringResource(Res.string.saving)
+                    }
                 )
             }
         },
         text = {
             Box(modifier = Modifier.fillMaxWidth()) {
-                if (!showActions) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                }
                 if (showActions) {
                     Column(
                         modifier = Modifier.align(Alignment.BottomCenter)
@@ -94,17 +93,32 @@ fun SavingProgressIndicator(
                         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        TextButton(onClick = onNewBillClicked) {
-                            Text(text = stringResource(Res.string.new_bill_insert_new_bill))
+                        TextButton(onClick = onNewClicked) {
+                            Text(
+                                text = onNewText,
+                                style = MaterialTheme.typography.titleMedium
+                            )
                         }
-                        TextButton(onClick = onGoToMonthlyScreenClicked) {
-                            Text(text = stringResource(Res.string.new_bill_go_to_montly_screen))
+                        secondActionText?.let {
+                            TextButton(onClick = onSecondActionClicked) {
+                                Text(
+                                    text = it,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
                         }
                         TextButton(onClick = onExitClicked) {
-                            Text(text = stringResource(Res.string.exit))
+                            Text(
+                                text = stringResource(Res.string.exit),
+                                style = MaterialTheme.typography.titleMedium
+                            )
                         }
-
                     }
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = MaterialTheme.colorScheme.outline
+                    )
                 }
             }
         }

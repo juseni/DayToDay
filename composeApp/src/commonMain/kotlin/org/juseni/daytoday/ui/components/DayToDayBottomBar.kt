@@ -2,8 +2,11 @@ package org.juseni.daytoday.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +25,8 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.total_amount
-import org.juseni.daytoday.utils.formatAmount
+import org.juseni.daytoday.resources.total_expenses
+import org.juseni.daytoday.utils.formatDouble
 
 @Composable
 fun DayToDayBottomBar(
@@ -59,22 +63,45 @@ fun DayToDayBottomBar(
 
 @Composable
 fun DayToDayTotalBottomBar(
-    total: Double
+    totalIncomes: Double,
+    totalExpenses: Double
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         shadowElevation = 8.dp
     ) {
-        Row(
+        Column(
             modifier =
             Modifier.fillMaxWidth()
                 .clip(MaterialTheme.shapes.extraSmall)
-                .padding(24.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(Res.string.total_amount))
-            Text(text = total.formatAmount())
+            Row(
+                modifier =
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = stringResource(Res.string.total_amount),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(text = (totalIncomes - totalExpenses).formatDouble())
+            }
+            Row(
+                modifier =
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = stringResource(Res.string.total_expenses),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(text = totalExpenses.formatDouble())
+            }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

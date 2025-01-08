@@ -23,6 +23,7 @@ import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.app_name
 import org.juseni.daytoday.resources.consolidated
 import org.juseni.daytoday.resources.expenses
+import org.juseni.daytoday.resources.general_error
 import org.juseni.daytoday.resources.incomes
 import org.juseni.daytoday.resources.new_apartment
 import org.juseni.daytoday.resources.new_bill
@@ -31,6 +32,7 @@ import org.juseni.daytoday.ui.components.DayToDayTopAppBar
 import org.juseni.daytoday.ui.components.ErrorScreenComponent
 import org.juseni.daytoday.ui.components.FullProgressIndicator
 import org.juseni.daytoday.ui.components.Screen
+import org.juseni.daytoday.ui.navigateTop
 import org.juseni.daytoday.ui.viewmodels.HomeScreenUiState
 import org.juseni.daytoday.ui.viewmodels.HomeScreenViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -53,14 +55,18 @@ fun HomeScreen(
                     HomeScreenCallbacks(
                         onConsolidatedClicked = { navController.navigate(ScreenRoute.MONTHS_SCREEN) },
                         onNewBillClicked = { navController.navigate(ScreenRoute.NEW_BILL_SCREEN) },
-                        onIncomesClicked = {},
-                        onExpensesClicked = {},
-                        onNewApartmentClicked = {}
-                    )
+                        onIncomesClicked = { navController.navigate(ScreenRoute.INCOMES_SCREEN) },
+                        onExpensesClicked = { navController.navigate(ScreenRoute.EXPENSES_SCREEN) },
+                        onNewApartmentClicked = { navController.navigate(ScreenRoute.NEW_APARTMENT_SCREEN) }
+                    ),
+                    onEndSessionClick = {
+                        viewModel.endSession()
+                        navController.navigateTop(ScreenRoute.LOGIN_SCREEN)
+                    }
                 )
             }
             is HomeScreenUiState.Error -> ErrorScreenComponent(
-                errorMessage = "Error en el home",
+                errorMessage = stringResource(Res.string.general_error),
                 navController = navController
             )
         }
@@ -72,7 +78,8 @@ fun HomeScreen(
 fun HomeScreenContent(
     hasBills: Boolean,
     hasIncomeExpenses: Boolean,
-    homeScreenCallbacks: HomeScreenCallbacks
+    homeScreenCallbacks: HomeScreenCallbacks,
+    onEndSessionClick: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -80,7 +87,8 @@ fun HomeScreenContent(
             DayToDayTopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = stringResource(Res.string.app_name),
-                hasBackButton = false
+                hasBackButton = false,
+                onEndSessionClick = onEndSessionClick
             )
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -104,12 +112,12 @@ fun HomeScreenContent(
                     text = stringResource(Res.string.new_bill),
                     onClick = homeScreenCallbacks.onNewBillClicked
                 )
-            }
-            if (hasIncomeExpenses) {
                 ItemClick(
                     text = stringResource(Res.string.incomes),
                     onClick = homeScreenCallbacks.onIncomesClicked
                 )
+            }
+            if (hasIncomeExpenses) {
                 ItemClick(
                     text = stringResource(Res.string.expenses),
                     onClick = homeScreenCallbacks.onExpensesClicked

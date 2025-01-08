@@ -1,6 +1,7 @@
 package org.juseni.daytoday.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,25 +10,27 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,19 +41,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.domain.models.Bill
+import org.juseni.daytoday.domain.models.Income
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.detail_amount
 import org.juseni.daytoday.resources.detail_date
 import org.juseni.daytoday.resources.detail_description
 import org.juseni.daytoday.resources.ic_error
 import org.juseni.daytoday.resources.month_screen_title
+import org.juseni.daytoday.resources.see_detail_label
 import org.juseni.daytoday.resources.tag_error
+import org.juseni.daytoday.resources.total_incomes
+import org.juseni.daytoday.ui.ScreenRoute
 import org.juseni.daytoday.ui.components.DayToDayTopAppBar
 import org.juseni.daytoday.ui.components.DayToDayTotalBottomBar
 import org.juseni.daytoday.ui.components.EmptyHolderComponent
@@ -62,7 +68,7 @@ import org.juseni.daytoday.ui.viewmodels.ConsolidatedScreenUiState
 import org.juseni.daytoday.ui.viewmodels.ConsolidatedScreenViewModel
 import org.juseni.daytoday.utils.Months
 import org.juseni.daytoday.utils.Tags
-import org.juseni.daytoday.utils.formatAmount
+import org.juseni.daytoday.utils.formatDouble
 import org.juseni.daytoday.utils.toFormatString
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -70,12 +76,14 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ConsolidatedScreen(
     navController: NavHostController,
     monthSelected: Int,
+    yearSelected: Int,
     viewModel: ConsolidatedScreenViewModel = koinViewModel<ConsolidatedScreenViewModel>()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val incomes by viewModel.incomes.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getBillsByMonth(monthSelected)
+        viewModel.getBillsByMonth(monthSelected, yearSelected)
     }
 
     Screen {
@@ -85,7 +93,14 @@ fun ConsolidatedScreen(
                 ConsolidatedScreenContent(
                     bills = (uiState as ConsolidatedScreenUiState.Success).bills,
                     monthSelected = monthSelected,
-                    onBackClick = { navController.popBackStack() }
+                    totalIncomes = incomes.sumOf { it.amount },
+                    onBackClick = { navController.popBackStack() },
+                    onSeeIncomeDetailClicked = {
+                        navController.navigate(
+                            "${ScreenRoute.INCOME_DETAIL_SCREEN}/$monthSelected/$yearSelected"
+                        )
+                    }
+
                 )
 
             is ConsolidatedScreenUiState.Error -> ErrorScreenComponent(
@@ -101,7 +116,9 @@ fun ConsolidatedScreen(
 fun ConsolidatedScreenContent(
     bills: List<Bill>,
     monthSelected: Int,
-    onBackClick: () -> Unit
+    totalIncomes: Double,
+    onBackClick: () -> Unit,
+    onSeeIncomeDetailClicked: () -> Unit
 ) {
     val billsSorted = bills.groupBy { it.tag }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -116,10 +133,13 @@ fun ConsolidatedScreenContent(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         bottomBar = {
-            DayToDayTotalBottomBar(bills.sumOf { it.amount })
+            DayToDayTotalBottomBar(
+                totalIncomes = totalIncomes,
+                totalExpenses = bills.sumOf { it.amount }
+            )
         }
     ) { innerPadding ->
-        if (billsSorted.isEmpty()) {
+        if (billsSorted.isEmpty() && totalIncomes == 0.0) {
            EmptyHolderComponent()
         } else {
             Column(
@@ -139,14 +159,41 @@ fun ConsolidatedScreenContent(
                     text = monthName,
                     style = MaterialTheme.typography.titleMedium
                 )
-                Column(
+                LazyColumn(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     billsSorted.forEach { (tag, items) ->
-                        CollapsibleItem(tag, items)
+                       item { CollapsibleItem(tag, items) }
+                    }
+                    if (totalIncomes > 0) {
+                        item { HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp)) }
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
+                                shape = RoundedCornerShape(12.dp),
+                                elevation = CardDefaults.cardElevation(
+                                    defaultElevation = 6.dp
+                                ),
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(16.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(text = stringResource(Res.string.total_incomes))
+                                    Text(text = totalIncomes.formatDouble())
+                                    TextButton(onClick = onSeeIncomeDetailClicked) {
+                                        Text(text = stringResource(Res.string.see_detail_label))
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -154,6 +201,7 @@ fun ConsolidatedScreenContent(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CollapsibleItem(tagId: Int, items: List<Bill>) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -161,7 +209,6 @@ fun CollapsibleItem(tagId: Int, items: List<Bill>) {
     val columnTitles =
         listOf(Res.string.detail_date, Res.string.detail_description, Res.string.detail_amount)
 
-    Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth()
                 .clickable { isExpanded = !isExpanded },
@@ -175,7 +222,7 @@ fun CollapsibleItem(tagId: Int, items: List<Bill>) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = items.sumOf { it.amount }.formatAmount(),
+                text = items.sumOf { it.amount }.formatDouble(),
                 style = MaterialTheme.typography.titleMedium
             )
             Icon(
@@ -193,42 +240,49 @@ fun CollapsibleItem(tagId: Int, items: List<Bill>) {
                     defaultElevation = 6.dp
                 ),
             ) {
-                Column(
+                LazyColumn(
                     modifier = Modifier.fillMaxWidth().padding(16.dp)
+                        .height(
+                            when(items.size) {
+                                in 1..2 -> 150.dp
+                                in 3..5 -> 200.dp
+                                in 6..8 -> 250.dp
+                                else -> 300.dp
+                            }
+                        )
                 ) {
-                    // Header Row
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.onSecondary)
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        columnTitles.forEach { title ->
-                            TableCell(text = stringResource(title), weight = 1f, isHeader = true)
+
+                    stickyHeader {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.onSecondary)
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            columnTitles.forEach { title ->
+                                TableCell(text = stringResource(title), weight = 1f, isHeader = true)
+                            }
                         }
                     }
-                    LazyColumn {
                         items(items) { bill ->
                             DetailItemTag(bill)
                         }
-                    }
                 }
             }
         }
-    }
 }
 
 @Composable
 fun DetailItemTag(item: Bill) {
-    val columnValues = listOf(item.date.toFormatString(), item.description, item.amount.formatAmount())
-    LazyRow(
+    val columnValues = listOf(item.date.toFormatString(), item.description, item.amount.formatDouble())
+    Row(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        items(columnValues) { value ->
+        columnValues.forEach { value ->
             TableCell(text = value, weight = 1f)
         }
     }

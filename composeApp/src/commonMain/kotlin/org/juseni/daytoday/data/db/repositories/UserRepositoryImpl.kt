@@ -19,4 +19,8 @@ class UserRepositoryImpl(
     override suspend fun insertUser(user: User) {
         userDao.insertUser(user.toUserEntity())
     }
+
+    override suspend fun deleteUser() {
+        userDao.deleteAll()
+    }
 }

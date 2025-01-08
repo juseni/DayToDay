@@ -19,6 +19,9 @@ class NewBillScreenViewModel(
     private val _isBillSaved = MutableStateFlow(false)
     val isBillSaved = _isBillSaved.asStateFlow()
 
+    private val _showErrorMessage = MutableStateFlow(false)
+    val showErrorMessage = _showErrorMessage.asStateFlow()
+
     fun saveBill(date: LocalDate, tag: Tags, amount: Double, description: String? = null) {
         viewModelScope.launch {
             networkRepository.saveBill(
@@ -30,8 +33,19 @@ class NewBillScreenViewModel(
                     description = description.orEmpty()
                 )
             ).conflate().collectLatest { isSaved ->
-                _isBillSaved.value = isSaved
+                if (isSaved) {
+                    _isBillSaved.value = true
+                } else {
+                    _showErrorMessage.value = true
+                }
             }
+        }
+    }
+
+    fun newBillAction() {
+        viewModelScope.launch {
+            _isBillSaved.value = false
+            _showErrorMessage.value = false
         }
     }
 }

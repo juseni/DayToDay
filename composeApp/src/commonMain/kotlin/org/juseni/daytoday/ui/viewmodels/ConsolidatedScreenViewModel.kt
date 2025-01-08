@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.launch
 import org.juseni.daytoday.domain.models.Bill
+import org.juseni.daytoday.domain.models.Income
 import org.juseni.daytoday.domain.repositories.NetworkRepository
 import org.juseni.daytoday.domain.repositories.UserRepository
 
@@ -22,14 +24,25 @@ class ConsolidatedScreenViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ConsolidatedScreenUiState>(ConsolidatedScreenUiState.Loading)
+    private val _uiState =
+        MutableStateFlow<ConsolidatedScreenUiState>(ConsolidatedScreenUiState.Loading)
     val uiState: StateFlow<ConsolidatedScreenUiState> = _uiState.asStateFlow()
 
-    fun getBillsByMonth(monthSelected: Int) {
+    private val _incomes = MutableStateFlow<List<Income>>(emptyList())
+    val incomes: StateFlow<List<Income>> = _incomes.asStateFlow()
+
+    fun getBillsByMonth(monthSelected: Int, yearSelected: Int) {
         viewModelScope.launch {
             userRepository.getUser().conflate().collect { user ->
                 if (user != null) {
-                    networkRepository.getBillsByMonth(monthSelected, user.id)
+                    networkRepository.getIncomes(
+                        monthSelected,
+                        yearSelected,
+                        user.id
+                    ).conflate().collectLatest { incomes ->
+                        _incomes.value = incomes
+                    }
+                    networkRepository.getBillsByMonth(monthSelected, yearSelected, user.id)
                         .conflate()
                         .collect { bills ->
                             _uiState.value = ConsolidatedScreenUiState.Success(bills)

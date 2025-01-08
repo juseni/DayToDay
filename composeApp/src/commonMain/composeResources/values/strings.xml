@@ -41,13 +41,14 @@
     <string name="month_october">October</string>
     <string name="month_november">November</string>
     <string name="month_december">December</string>
+    <string name="year_filter">Select the year you want to see</string>
 
     <!-- Consolidated screen-->
     <string name="tag_supermarket">Supermarket</string>
     <string name="tag_store">Store</string>
     <string name="tag_market_place">Public market</string>
     <string name="tag_others">Others</string>
-    <string name="tag_epm">EPM</string>
+    <string name="tag_epm">Public services</string>
     <string name="tag_cellphone">Cellphone</string>
     <string name="tag_internet">Internet</string>
     <string name="tag_credit_card">Credit card</string>
@@ -59,6 +60,10 @@
     <string name="detail_date">Date</string>
     <string name="detail_amount">Amount</string>
     <string name="detail_description">Description</string>
+    <string name="total_incomes">Total incomes</string>
+    <string name="tag_salary">Salary</string>
+    <string name="tag_commission">Commission</string>
+    <string name="tag_car">Car</string>
 
 <!-- New bill screen-->
     <string name="new_bill_screen_title">New bill</string>
@@ -78,16 +83,68 @@
     <string name="new_bill_insert_new_bill">Add new bill</string>
     <string name="new_bill_go_to_montly_screen">Go to monthly consolidated</string>
 
+    <!-- New apartment screen-->
+    <string name="new_apartment_screen_title">New apartment</string>
+    <string name="new_apartment_screen_info">Fill in the information below</string>
+    <string name="new_apartment_name">Name</string>
+    <string name="new_apartment_number">Number</string>
+    <string name="new_apartment_percentage">Percentage</string>
+    <string name="new_apartment_is_direct">Is direct</string>
+    <string name="new_apartment_error">Error saving apartment, Try again later</string>
+
+    <!-- Incomes screen-->
+    <string name="incomes_screen_title">Incomes</string>
+    <string name="incomes_screen_info">Fill in the information below</string>
+    <string name="incomes_screen_error">Error saving income, Try again later</string>
+    <string name="incomes_screen_type">Income type</string>
+    <string name="incomes_screen_rent">Rent</string>
+    <string name="incomes_screen_choose_apartment">Choose apartment</string>
+    <string name="incomes_screen_sale">Sale</string>
+    <string name="incomes_screen_independent">Salary / Others</string>
+    <string name="incomes_screen_sale_description">Description</string>
+    <string name="incomes_screen_rent_type">Rent type</string>
+    <string name="incomes_screen_currency">Select currency</string>
+    <string name="incomes_screen_convert">Convert currency</string>
+    <string name="incomes_screen_amount">Amount</string>
+    <string name="incomes_screen_apartment">Apartment</string>
+    <string name="new_income">New income</string>
+
+
+<!--    Expenses screen-->
+    <string name="expenses_screen_title">Expenses</string>
+    <string name="expenses_screen_info">Fill in the information below</string>
+    <string name="expenses_screen_error">Error saving expense, Try again later</string>
+    <string name="expenses_screen_type">Expense type</string>
+    <string name="expenses_screen_percentage_commision">Commission percentage</string>
+    <string name="expenses_screen_salary">Salary</string>
+    <string name="expenses_screen_commission">Commission</string>"
+    <string name="expenses_screen_description">Description</string>
+    <string name="new_expense">New expense</string>
+    <string name="expenses_screen_choose_income">Choose income</string>
+    <string name="expenses_screen_error_getting_income">Error getting income, Try again later</string>
+
+    <!--    Incomes detail screen-->
+    <string name="income_detail_screen_title">Incomes detail</string>
+    <string name="income_detail_screen_date">Date: </string>
+    <string name="income_detail_screen_apartment">Apartment: </string>
+    <string name="income_detail_screen_amount">Amount: </string>
+    <string name="income_detail_screen_description">Description: </string>
+    <string name="income_detail_screen_rent_apartment_type">Rent apartment type: </string>
+
 
 <!-- Common strings-->
-    <string name="total_amount">Total amount</string>
+    <string name="total_amount">Monthly amount</string>
+    <string name="total_expenses">Total expenses</string>
     <string name="warning_no_records">There are no records to show at this moment</string>
     <string name="save">Save</string>"
     <string name="saving">Saving...</string>
+    <string name="saved_successfully">Saved successfully</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="exit">Exit</string>
-
-
-
+    <string name="error_getting_apartments">Error getting apartments, Try again later</string>
+    <string name="yes_label">Yes</string>
+    <string name="no_label">No</string>
+    <string name="see_detail_label">See detail</string>
+    <string name="general_error">Something went wrong, Try again later</string>
 </resources>

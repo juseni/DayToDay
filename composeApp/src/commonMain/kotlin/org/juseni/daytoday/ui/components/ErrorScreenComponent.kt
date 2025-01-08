@@ -79,6 +79,42 @@ fun ErrorScreenComponent(
 }
 
 @Composable
+fun ErrorAlertDialog(
+    errorMessage: String,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            Button(
+                onClick = onDismiss,
+                content = {
+                    Text(text = stringResource(Res.string.ok))
+                }
+            )
+        },
+        dismissButton = {},
+        title = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = stringResource(Res.string.tag_error)
+                )
+            }
+        },
+        text = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = errorMessage,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+        }
+    )
+}
+
+@Composable
 fun ErrorLogin(
     onDismiss: () -> Unit
 ) {

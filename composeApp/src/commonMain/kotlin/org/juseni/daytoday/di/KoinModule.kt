@@ -11,15 +11,20 @@ import org.juseni.daytoday.BuildConfig
 import org.juseni.daytoday.data.db.getRoomDatabase
 import org.juseni.daytoday.data.db.repositories.UserRepositoryImpl
 import org.juseni.daytoday.data.network.ApiService
+import org.juseni.daytoday.data.network.CurrencyApiServer
 import org.juseni.daytoday.data.network.repositories.NetworkRepositoryImpl
 import org.juseni.daytoday.data.sharedpreferences.createDataStore
 import org.juseni.daytoday.data.sharedpreferences.repositories.DataStoreRepositoryImpl
 import org.juseni.daytoday.domain.repositories.DataStoreRepository
 import org.juseni.daytoday.domain.repositories.NetworkRepository
 import org.juseni.daytoday.domain.repositories.UserRepository
-import org.juseni.daytoday.ui.viewmodels.HomeScreenViewModel
-import org.juseni.daytoday.ui.viewmodels.LoginScreenViewModel
 import org.juseni.daytoday.ui.viewmodels.ConsolidatedScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.ExpensesScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.HomeScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.IncomeDetailScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.IncomesScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.LoginScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.NewApartmentScreenViewModel
 import org.juseni.daytoday.ui.viewmodels.NewBillScreenViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -40,18 +45,22 @@ val sharedModule = module {
     // Repositories
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<DataStoreRepository> { DataStoreRepositoryImpl(get()) }
-    single<NetworkRepository> { NetworkRepositoryImpl(get(), get()) }
+    single<NetworkRepository> { NetworkRepositoryImpl(get(), get(), get()) }
 
     // ViewModels
     viewModelOf(::LoginScreenViewModel)
     viewModelOf(::HomeScreenViewModel)
     viewModelOf(::ConsolidatedScreenViewModel)
     viewModelOf(::NewBillScreenViewModel)
-
+    viewModelOf(::NewApartmentScreenViewModel)
+    viewModelOf(::IncomesScreenViewModel)
+    viewModelOf(::ExpensesScreenViewModel)
+    viewModelOf(::IncomeDetailScreenViewModel)
 }
 
 val networkModule = module {
 
+    factoryOf(::CurrencyApiServer)
     factoryOf(::ApiService)
 
     single<HttpClient> {
@@ -76,6 +85,7 @@ val networkModule = module {
 val appModule = module {
     single(named("apiKey")) { BuildConfig.API_KEY }
     single { BuildConfig.URL_HOST }
+    single { BuildConfig.URL_HOST_CURRENCY_EXCHANGE }
 }
 
 fun initializeKoin(

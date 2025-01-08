@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LabelledCheckBox(
     checked: Boolean,
+    showCheckBoxAtTheEnd: Boolean = false,
     onCheckedChange: (Boolean) -> Unit,
     label: String,
     modifier: Modifier = Modifier
@@ -23,13 +24,26 @@ fun LabelledCheckBox(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .clickable { onCheckedChange(!checked) }
-            .padding(8.dp)
+            .padding(if (showCheckBoxAtTheEnd) 0.dp else 8.dp)
     ) {
-        Checkbox(
-            checked = checked,
-            onCheckedChange = { onCheckedChange(it) }
+        if (!showCheckBoxAtTheEnd) {
+            Checkbox(
+                checked = checked,
+                onCheckedChange = { onCheckedChange(it) }
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
+        }
+        Text(
+            modifier = if (showCheckBoxAtTheEnd) Modifier.weight(1f) else Modifier,
+            text = label
         )
-        Spacer(modifier = Modifier.size(8.dp))
-        Text(text = label)
+        if (showCheckBoxAtTheEnd) {
+            Checkbox(
+                modifier = Modifier.weight(1f),
+                checked = checked,
+                onCheckedChange = { onCheckedChange(it) }
+            )
+        }
     }
 }
