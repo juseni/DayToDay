@@ -1,8 +1,7 @@
 package org.juseni.daytoday.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,26 +12,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -55,13 +43,11 @@ import org.juseni.daytoday.domain.models.Apartment
 import org.juseni.daytoday.domain.models.Income
 import org.juseni.daytoday.domain.models.RentApartmentType
 import org.juseni.daytoday.resources.Res
-import org.juseni.daytoday.resources._50228_flag_colombia_icon
-import org.juseni.daytoday.resources._50305_flag_usa_icon
 import org.juseni.daytoday.resources.error_getting_apartments
-import org.juseni.daytoday.resources.incomes_screen_amount
 import org.juseni.daytoday.resources.incomes_screen_apartment
 import org.juseni.daytoday.resources.incomes_screen_choose_apartment
-import org.juseni.daytoday.resources.incomes_screen_currency
+import org.juseni.daytoday.resources.incomes_screen_error
+import org.juseni.daytoday.resources.incomes_screen_independent
 import org.juseni.daytoday.resources.incomes_screen_info
 import org.juseni.daytoday.resources.incomes_screen_rent
 import org.juseni.daytoday.resources.incomes_screen_rent_type
@@ -69,21 +55,20 @@ import org.juseni.daytoday.resources.incomes_screen_sale
 import org.juseni.daytoday.resources.incomes_screen_sale_description
 import org.juseni.daytoday.resources.incomes_screen_title
 import org.juseni.daytoday.resources.incomes_screen_type
-import org.juseni.daytoday.resources.new_apartment
-import org.juseni.daytoday.resources.new_apartment_error
+import org.juseni.daytoday.resources.new_income
 import org.juseni.daytoday.resources.save
 import org.juseni.daytoday.ui.components.ApartmentsUiSelector
+import org.juseni.daytoday.ui.components.CurrencySection
 import org.juseni.daytoday.ui.components.DateSection
 import org.juseni.daytoday.ui.components.DayToDayTopAppBar
+import org.juseni.daytoday.ui.components.DropDownSelector
 import org.juseni.daytoday.ui.components.EditTextComponent
 import org.juseni.daytoday.ui.components.ErrorAlertDialog
 import org.juseni.daytoday.ui.components.SavingProgressIndicator
 import org.juseni.daytoday.ui.components.Screen
 import org.juseni.daytoday.ui.viewmodels.ApartmentsUiState
 import org.juseni.daytoday.ui.viewmodels.IncomesScreenViewModel
-import org.juseni.daytoday.utils.CurrencyType
 import org.juseni.daytoday.utils.RentType
-import org.juseni.daytoday.utils.formatDouble
 import org.juseni.daytoday.utils.getTodayLocalDate
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -113,7 +98,8 @@ fun IncomesScreen(
             showSaveButton = when (incomeUiState.rentType) {
                 RentType.RENT -> incomeUiState.apartment != null && incomeUiState.rentApartmentType != null
                         && incomeUiState.amount > 0.0
-                RentType.SALE -> incomeUiState.saleDescription != null && incomeUiState.amount > 0.0
+                RentType.SALE, RentType.INDEPENDENT ->
+                    incomeUiState.saleDescription != null && incomeUiState.amount > 0.0
                 RentType.UNSELECTED -> false
             },
             callbacks = IncomeCallbacks(
@@ -146,7 +132,7 @@ fun IncomesScreen(
                 viewModel.saveNewIncome(
                     Income(
                         date = incomeUiState.date,
-                        isRent = incomeUiState.rentType == RentType.RENT,
+                        rentType = incomeUiState.rentType.type,
                         apartmentId = incomeUiState.apartment?.id,
                         rentApartmentTypeId = incomeUiState.rentApartmentType?.id,
                         amount = if (incomeUiState.rentType == RentType.RENT) {
@@ -174,7 +160,7 @@ fun IncomesScreen(
         if (showDialog) {
             SavingProgressIndicator(
                 showActions = isIncomeSaved,
-                onNewText = stringResource(Res.string.new_apartment),
+                onNewText = stringResource(Res.string.new_income),
                 onNewClicked = {
                     showDialog = false
                     incomeUiState = IncomeUiState()
@@ -189,7 +175,7 @@ fun IncomesScreen(
         if (showErrorMessage) {
             showDialog = false
             ErrorAlertDialog(
-                errorMessage = stringResource(Res.string.new_apartment_error),
+                errorMessage = stringResource(Res.string.incomes_screen_error),
                 onDismiss = { viewModel.resetIncomeAction() }
             )
         }
@@ -209,7 +195,6 @@ fun IncomesScreenContent(
     showApartmentSelector: () -> Unit,
     onSaveClicked: () -> Unit
 ) {
-    var currencyType by remember { mutableStateOf(CurrencyType.UNSELECTED) }
     var amountToShow by remember { mutableStateOf(0.0) }
 
     if (uiState.amount == 0.0) {
@@ -244,9 +229,9 @@ fun IncomesScreenContent(
                 textAlign = TextAlign.Center
             )
 
-            IncomeTypeSelector(
-                selectedType = uiState.rentType,
-                onTypeSelected = callbacks.onRentTypeSelected
+            RentTypeSection(
+                rentType = uiState.rentType,
+                onRentTypeSelected = callbacks.onRentTypeSelected
             )
 
             if (uiState.rentType == RentType.RENT) {
@@ -259,70 +244,32 @@ fun IncomesScreenContent(
                 )
 
                 // Rent Apartment type section
-                RentApartmentTypeSelector(
-                    options = rentApartmentTypes,
-                    selectedType = uiState.rentApartmentType,
-                    onTypeSelected = callbacks.onRentApartmentTypeChange
+                DropDownSelector(
+                    options = rentApartmentTypes.map { it.name },
+                    labelToShow = stringResource(Res.string.incomes_screen_rent_type),
+                    selectedOption = uiState.rentApartmentType?.name,
+                    onOptionSelected = { optionSelected ->
+                        callbacks.onRentApartmentTypeChange(
+                            rentApartmentTypes.first { it.name == optionSelected }
+                        )
+                    }
                 )
             }
-            if (uiState.rentType != RentType.UNSELECTED) {
+            if (uiState.rentType != RentType.UNSELECTED || uiState.rentType == RentType.INDEPENDENT) {
                 // Date Section
                 DateSection(
                     date = uiState.date,
                     onDateSelected = callbacks.onDateSelected
                 )
+
                 // Currency section
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp)),
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 6.dp
-                    ),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = stringResource(Res.string.incomes_screen_currency))
-                        CurrencyIcon(
-                            painterResource = Res.drawable._50228_flag_colombia_icon,
-                            onCurrencyClicked = { currencyType = CurrencyType.COP }
-                        )
-                        CurrencyIcon(
-                            painterResource = Res.drawable._50305_flag_usa_icon,
-                            onCurrencyClicked = { currencyType = CurrencyType.USD }
-                        )
-                    }
-                }
-                if (currencyType != CurrencyType.UNSELECTED) {
-                    // Amount section
-                    EditTextComponent(
-                        title = stringResource(Res.string.incomes_screen_amount),
-                        isAmount = true,
-                        amountToShow = amountToShow,
-                        onAmountChange = {
-                            amountToShow = it
-                            if (currencyType == CurrencyType.COP) {
-                                callbacks.onAmountChange(it)
-                            } else {
-                                callbacks.onAmountChange(it * currencyExchangeRate)
-                            }
-                        }
-                    )
-                    if (currencyType == CurrencyType.USD) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = (amountToShow * currencyExchangeRate).formatDouble(),
-                            textAlign = TextAlign.End
-                        )
-                    }
-                }
+                CurrencySection(
+                    amountToShow = uiState.amount,
+                    currencyExchangeRate = currencyExchangeRate,
+                    onAmountChange = callbacks.onAmountChange
+                )
             }
-            if (uiState.rentType == RentType.SALE) {
+            AnimatedVisibility(uiState.rentType == RentType.SALE || uiState.rentType == RentType.INDEPENDENT) {
                 // Sale description section
                 EditTextComponent(
                     title = stringResource(Res.string.incomes_screen_sale_description),
@@ -330,7 +277,7 @@ fun IncomesScreenContent(
                     onValueChange = callbacks.onSaleDescriptionChange
                 )
             }
-            if (showSaveButton) {
+            AnimatedVisibility(showSaveButton) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onSaveClicked
@@ -340,6 +287,33 @@ fun IncomesScreenContent(
             }
         }
     }
+}
+
+@Composable
+fun RentTypeSection(
+    rentType: RentType,
+    onRentTypeSelected: (RentType) -> Unit
+) {
+    val rentTypeFiltered = RentType.entries.filter { it != RentType.UNSELECTED }
+    val rentText = stringResource(Res.string.incomes_screen_rent)
+    val saleText = stringResource(Res.string.incomes_screen_sale)
+    val independentText = stringResource(Res.string.incomes_screen_independent)
+
+    DropDownSelector(
+        options = rentTypeFiltered.map { stringResource(it.textRes!!) },
+        labelToShow = stringResource(Res.string.incomes_screen_type),
+        selectedOption = rentType.textRes?.let { stringResource(it) },
+        onOptionSelected = { optionSelected ->
+            onRentTypeSelected(
+                when (optionSelected) {
+                    rentText -> RentType.RENT
+                    saleText -> RentType.SALE
+                    independentText -> RentType.INDEPENDENT
+                    else -> RentType.UNSELECTED
+                }
+            )
+        }
+    )
 }
 
 @Composable
@@ -389,7 +363,6 @@ fun ApartmentSelector(
     onApartmentSelected: (Apartment) -> Unit,
     onDismiss: () -> Unit = {}
 ) {
-
     AlertDialog(
         modifier = Modifier
             .fillMaxWidth(0.9f) // Set width to 90% of the screen width
@@ -438,118 +411,6 @@ fun ApartmentSelector(
             }
         }
     )
-}
-
-@Composable
-fun IncomeTypeSelector(
-    selectedType: RentType,
-    onTypeSelected: (RentType) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-    val options = RentType.entries.filter { it != RentType.UNSELECTED }
-    val rentText = stringResource(Res.string.incomes_screen_rent)
-    val saleText = stringResource(Res.string.incomes_screen_sale)
-
-    Column {
-        OutlinedTextField(
-            value = when (selectedType) {
-                RentType.RENT -> rentText
-                RentType.SALE -> saleText
-                RentType.UNSELECTED -> ""
-            },
-            enabled = false,
-            colors = TextFieldDefaults.colors(
-                disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                disabledIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-            ),
-            onValueChange = { /* No-op */ },
-            readOnly = true,
-            label = { Text(stringResource(Res.string.incomes_screen_type)) },
-            modifier = Modifier.fillMaxWidth().clickable { expanded = true },
-            trailingIcon = {
-                Icon(
-                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                    contentDescription = null
-                )
-            }
-        )
-
-        // Dropdown menu items
-        DropdownMenu(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = if (option == RentType.RENT) rentText else saleText,
-                            textAlign = TextAlign.Center
-                        )
-                    },
-                    onClick = {
-                        onTypeSelected(option)
-                        expanded = false
-                    })
-            }
-        }
-    }
-}
-
-@Composable
-fun RentApartmentTypeSelector(
-    options: List<RentApartmentType>,
-    selectedType: RentApartmentType?,
-    onTypeSelected: (RentApartmentType) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Column {
-        OutlinedTextField(
-            value = selectedType?.name.orEmpty(),
-            enabled = false,
-            colors = TextFieldDefaults.colors(
-                disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                disabledIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-            ),
-            onValueChange = { /* No-op */ },
-            readOnly = true,
-            label = { Text(stringResource(Res.string.incomes_screen_rent_type)) },
-            modifier = Modifier.fillMaxWidth().clickable { expanded = true },
-            trailingIcon = {
-                Icon(
-                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                    contentDescription = null
-                )
-            }
-        )
-
-        // Dropdown menu items
-        DropdownMenu(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = option.name,
-                            textAlign = TextAlign.Center
-                        )
-                    },
-                    onClick = {
-                        onTypeSelected(option)
-                        expanded = false
-                    })
-            }
-        }
-    }
 }
 
 data class IncomeUiState(

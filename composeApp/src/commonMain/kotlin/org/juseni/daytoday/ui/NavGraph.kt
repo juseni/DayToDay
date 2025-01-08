@@ -8,7 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.juseni.daytoday.ui.screens.ConsolidatedScreen
+import org.juseni.daytoday.ui.screens.ExpensesScreen
 import org.juseni.daytoday.ui.screens.HomeScreen
+import org.juseni.daytoday.ui.screens.IncomeScreenDetail
 import org.juseni.daytoday.ui.screens.IncomesScreen
 import org.juseni.daytoday.ui.screens.LoginScreen
 import org.juseni.daytoday.ui.screens.MonthsScreen
@@ -23,6 +25,8 @@ object ScreenRoute {
     const val NEW_BILL_SCREEN = "new_bill"
     const val NEW_APARTMENT_SCREEN = "new_apartment"
     const val INCOMES_SCREEN = "incomes"
+    const val EXPENSES_SCREEN = "expenses"
+    const val INCOME_DETAIL_SCREEN = "income_detail"
 }
 
 fun NavController.navigateTop(route: String) {
@@ -80,7 +84,24 @@ fun NavGraph(navController: NavHostController) {
         composable(ScreenRoute.INCOMES_SCREEN) {
             IncomesScreen(navController)
         }
+        composable(ScreenRoute.EXPENSES_SCREEN) {
+            ExpensesScreen(navController)
+        }
+        composable(
+            route = "${ScreenRoute.INCOME_DETAIL_SCREEN}/{monthSelected}/{yearSelected}",
+            arguments = listOf(
+                navArgument("monthSelected") { type = NavType.IntType },
+                navArgument("yearSelected") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val monthSelected = backStackEntry.arguments?.getInt("monthSelected")
+            val yearSelected = backStackEntry.arguments?.getInt("yearSelected")
 
-
+            IncomeScreenDetail(
+                navController = navController,
+                monthSelected = monthSelected ?: 0,
+                yearSelected = yearSelected ?: 0
+            )
+        }
     }
 }

@@ -154,12 +154,14 @@ class ApiService(private val client: HttpClient) {
 
     suspend fun getIncomes(
         monthSelected: Int,
-        yearSelected: Int
+        yearSelected: Int,
+        userId: Int,
+        rentTypeId: Int
     ): List<IncomeRemote> = withContext(Dispatchers.IO) {
         try {
             val httResponse = client.get(
                 GET_INCOME_URL.plus(
-                    "year_input=$yearSelected&month_input=$monthSelected"
+                    "year_input=$yearSelected&month_input=$monthSelected&user_id_input=$userId&rent_type_id_input=$rentTypeId"
                 )
             )
             if (httResponse.status.isSuccessful()) {

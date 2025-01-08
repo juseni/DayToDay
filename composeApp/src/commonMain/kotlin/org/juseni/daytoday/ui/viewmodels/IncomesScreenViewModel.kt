@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.stateIn
@@ -35,6 +36,7 @@ class IncomesScreenViewModel(
 
     val rentApartmentTypes: StateFlow<List<RentApartmentType>> =
         networkRepository.getRentApartmentTypes()
+            .catch { emit(emptyList()) }
             .stateIn(
                 scope = viewModelScope,
                 started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
@@ -43,6 +45,7 @@ class IncomesScreenViewModel(
 
     val currencyExchangeRate: StateFlow<Double> =
         networkRepository.getCurrencyConverter()
+            .catch { emit(0.0) }
             .stateIn(
                 scope = viewModelScope,
                 started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),

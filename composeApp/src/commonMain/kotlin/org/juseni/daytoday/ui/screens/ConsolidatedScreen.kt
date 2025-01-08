@@ -56,6 +56,7 @@ import org.juseni.daytoday.resources.month_screen_title
 import org.juseni.daytoday.resources.see_detail_label
 import org.juseni.daytoday.resources.tag_error
 import org.juseni.daytoday.resources.total_incomes
+import org.juseni.daytoday.ui.ScreenRoute
 import org.juseni.daytoday.ui.components.DayToDayTopAppBar
 import org.juseni.daytoday.ui.components.DayToDayTotalBottomBar
 import org.juseni.daytoday.ui.components.EmptyHolderComponent
@@ -93,7 +94,13 @@ fun ConsolidatedScreen(
                     bills = (uiState as ConsolidatedScreenUiState.Success).bills,
                     monthSelected = monthSelected,
                     totalIncomes = incomes.sumOf { it.amount },
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.popBackStack() },
+                    onSeeIncomeDetailClicked = {
+                        navController.navigate(
+                            "${ScreenRoute.INCOME_DETAIL_SCREEN}/$monthSelected/$yearSelected"
+                        )
+                    }
+
                 )
 
             is ConsolidatedScreenUiState.Error -> ErrorScreenComponent(
@@ -110,7 +117,8 @@ fun ConsolidatedScreenContent(
     bills: List<Bill>,
     monthSelected: Int,
     totalIncomes: Double,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onSeeIncomeDetailClicked: () -> Unit
 ) {
     val billsSorted = bills.groupBy { it.tag }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -125,10 +133,13 @@ fun ConsolidatedScreenContent(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         bottomBar = {
-            DayToDayTotalBottomBar(totalIncomes - bills.sumOf { it.amount } )
+            DayToDayTotalBottomBar(
+                totalIncomes = totalIncomes,
+                totalExpenses = bills.sumOf { it.amount }
+            )
         }
     ) { innerPadding ->
-        if (billsSorted.isEmpty()) {
+        if (billsSorted.isEmpty() && totalIncomes == 0.0) {
            EmptyHolderComponent()
         } else {
             Column(
@@ -177,9 +188,7 @@ fun ConsolidatedScreenContent(
                                 ) {
                                     Text(text = stringResource(Res.string.total_incomes))
                                     Text(text = totalIncomes.formatDouble())
-                                    TextButton(
-                                        onClick = { /*TODO*/ },
-                                    ) {
+                                    TextButton(onClick = onSeeIncomeDetailClicked) {
                                         Text(text = stringResource(Res.string.see_detail_label))
                                     }
                                 }

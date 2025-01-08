@@ -115,12 +115,28 @@ class NetworkRepositoryImpl(
 
     override fun saveNewIncome(income: Income): Flow<Boolean> =
         flow {
-            emit(apiService.saveNewIncome(income.toIncomeRemote()))
+            userDao.getUser().collect { user ->
+                if (user != null) {
+                    emit(apiService.saveNewIncome(income.toIncomeRemote(user.id)))
+                } else {
+                    emit(false)
+                }
+            }
         }
 
-    override fun getIncomes(monthSelected: Int, yearSelected: Int): Flow<List<Income>> =
+    override fun getIncomes(
+        monthSelected: Int,
+        yearSelected: Int,
+        userId: Int,
+        rentTypeId: Int
+    ): Flow<List<Income>> =
         flow {
-            val incomes = apiService.getIncomes(yearSelected = yearSelected, monthSelected = monthSelected)
+            val incomes = apiService.getIncomes(
+                yearSelected = yearSelected,
+                monthSelected = monthSelected,
+                userId = userId,
+                rentTypeId = rentTypeId
+            )
             emit(incomes.map(IncomeRemote::toIncome))
         }
 

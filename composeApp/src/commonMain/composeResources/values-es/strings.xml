@@ -48,7 +48,7 @@
     <string name="tag_store">Tienda</string>
     <string name="tag_market_place">Plaza de mercado</string>
     <string name="tag_others">Otros</string>
-    <string name="tag_epm">EPM</string>
+    <string name="tag_epm">Servicios públicos</string>
     <string name="tag_cellphone">Celular</string>
     <string name="tag_internet">Internet</string>
     <string name="tag_credit_card">Tarjeta de crédito</string>
@@ -61,6 +61,9 @@
     <string name="detail_amount">Valor</string>
     <string name="detail_description">Descripción</string>
     <string name="total_incomes">Ingresos totales</string>
+    <string name="tag_salary">Salario</string>
+    <string name="tag_commission">Comisión</string>
+    <string name="tag_car">Automóvil</string>
 
     <!-- New bill screen-->
     <string name="new_bill_screen_title">Nueva Factura</string>
@@ -97,16 +100,39 @@
     <string name="incomes_screen_rent">Renta</string>
     <string name="incomes_screen_choose_apartment">Seleccionar apartamento</string>
     <string name="incomes_screen_sale">Venta</string>
-    <string name="incomes_screen_sale_description">Descripción de venta</string>
+    <string name="incomes_screen_independent">Salario / Otros</string>
+    <string name="incomes_screen_sale_description">Descripción</string>
     <string name="incomes_screen_rent_type">Tipo de renta</string>
     <string name="incomes_screen_currency">Seleccionar moneda</string>
     <string name="incomes_screen_convert">Convertir moneda</string>
     <string name="incomes_screen_amount">Valor</string>
-    <string name="incomes_screen_apartment">Apartmento</string>
+    <string name="incomes_screen_apartment">Apartamento</string>
+    <string name="new_income">Nuevo ingreso</string>
 
+    <!--    Expenses screen-->
+    <string name="expenses_screen_title">Gastos</string>
+    <string name="expenses_screen_info">Ingrese los datos solicitados</string>
+    <string name="expenses_screen_error">Error al guardar el gasto, Intente de nuevo más tarde</string>
+    <string name="expenses_screen_type">Tipo de gasto</string>
+    <string name="expenses_screen_percentage_commision">Porcentaje de comisión</string>
+    <string name="expenses_screen_salary">Salario</string>
+    <string name="expenses_screen_commission">Comisión</string>"
+    <string name="expenses_screen_description">Descripción</string>
+    <string name="new_expense">Nuevo gasto</string>
+    <string name="expenses_screen_choose_income">Seleccionar ingreso</string>
+    <string name="expenses_screen_error_getting_income">Error al seleccionar el ingreso, Intente de nuevo más tarde</string>
+
+<!--    Incomes detail screen-->
+    <string name="income_detail_screen_title">Detalle de ingresos</string>
+    <string name="income_detail_screen_date">Fecha: </string>
+    <string name="income_detail_screen_apartment">Apartmento: </string>
+    <string name="income_detail_screen_amount">Valor: </string>
+    <string name="income_detail_screen_description">Descripción: </string>
+    <string name="income_detail_screen_rent_apartment_type">Tipo de renta del apartamento: </string>
 
     <!-- Common strings-->
-    <string name="total_amount">Valor total</string>
+    <string name="total_amount">Saldo mensual</string>
+    <string name="total_expenses">Gastos totales</string>
     <string name="warning_no_records">No hay registros para mostrar en este momento</string>
     <string name="save">Guardar</string>
     <string name="saving">Guardando...</string>
@@ -118,4 +144,5 @@
     <string name="yes_label">Si</string>
     <string name="no_label">No</string>
     <string name="see_detail_label">Ver detalle</string>
+    <string name="general_error">Algo salió mal, Intente de nuevo más tarde</string>
 </resources>

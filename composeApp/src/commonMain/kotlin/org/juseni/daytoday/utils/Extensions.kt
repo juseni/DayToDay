@@ -29,7 +29,7 @@ fun String.formatDoubleAmount(): String  {
     // Add thousands separator
     val formattedIntegerPart = integerPart.reversed().chunked(3).joinToString(",").reversed()
 
-    return formattedIntegerPart + decimalPart.take(2)
+    return formattedIntegerPart + decimalPart
 }
 
 fun String.formatToDouble(): Double = this.replace(",", "").toDoubleOrNull() ?: 0.0

@@ -27,6 +27,11 @@ interface NetworkRepository {
 
     fun saveNewIncome(income: Income): Flow<Boolean>
 
-    fun getIncomes(monthSelected: Int, yearSelected: Int): Flow<List<Income>>
+    fun getIncomes(
+        monthSelected: Int,
+        yearSelected: Int,
+        userId: Int,
+        rentTypeId: Int = 0
+    ): Flow<List<Income>>
 
 }

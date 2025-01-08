@@ -23,6 +23,7 @@ import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.app_name
 import org.juseni.daytoday.resources.consolidated
 import org.juseni.daytoday.resources.expenses
+import org.juseni.daytoday.resources.general_error
 import org.juseni.daytoday.resources.incomes
 import org.juseni.daytoday.resources.new_apartment
 import org.juseni.daytoday.resources.new_bill
@@ -55,7 +56,7 @@ fun HomeScreen(
                         onConsolidatedClicked = { navController.navigate(ScreenRoute.MONTHS_SCREEN) },
                         onNewBillClicked = { navController.navigate(ScreenRoute.NEW_BILL_SCREEN) },
                         onIncomesClicked = { navController.navigate(ScreenRoute.INCOMES_SCREEN) },
-                        onExpensesClicked = {},
+                        onExpensesClicked = { navController.navigate(ScreenRoute.EXPENSES_SCREEN) },
                         onNewApartmentClicked = { navController.navigate(ScreenRoute.NEW_APARTMENT_SCREEN) }
                     ),
                     onEndSessionClick = {
@@ -65,7 +66,7 @@ fun HomeScreen(
                 )
             }
             is HomeScreenUiState.Error -> ErrorScreenComponent(
-                errorMessage = "Error en el home",
+                errorMessage = stringResource(Res.string.general_error),
                 navController = navController
             )
         }
@@ -111,12 +112,12 @@ fun HomeScreenContent(
                     text = stringResource(Res.string.new_bill),
                     onClick = homeScreenCallbacks.onNewBillClicked
                 )
-            }
-            if (hasIncomeExpenses) {
                 ItemClick(
                     text = stringResource(Res.string.incomes),
                     onClick = homeScreenCallbacks.onIncomesClicked
                 )
+            }
+            if (hasIncomeExpenses) {
                 ItemClick(
                     text = stringResource(Res.string.expenses),
                     onClick = homeScreenCallbacks.onExpensesClicked

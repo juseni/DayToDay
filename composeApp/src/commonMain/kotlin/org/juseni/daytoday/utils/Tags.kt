@@ -4,7 +4,9 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.ic_atm
+import org.juseni.daytoday.resources.ic_car
 import org.juseni.daytoday.resources.ic_cellphone
+import org.juseni.daytoday.resources.ic_commission
 import org.juseni.daytoday.resources.ic_credit_card
 import org.juseni.daytoday.resources.ic_epm
 import org.juseni.daytoday.resources.ic_health
@@ -13,10 +15,13 @@ import org.juseni.daytoday.resources.ic_market_place
 import org.juseni.daytoday.resources.ic_others
 import org.juseni.daytoday.resources.ic_public_transport
 import org.juseni.daytoday.resources.ic_restaurant
+import org.juseni.daytoday.resources.ic_salary
 import org.juseni.daytoday.resources.ic_store
 import org.juseni.daytoday.resources.ic_supermarket
 import org.juseni.daytoday.resources.tag_atm
+import org.juseni.daytoday.resources.tag_car
 import org.juseni.daytoday.resources.tag_cellphone
+import org.juseni.daytoday.resources.tag_commission
 import org.juseni.daytoday.resources.tag_credit_card
 import org.juseni.daytoday.resources.tag_epm
 import org.juseni.daytoday.resources.tag_health
@@ -25,6 +30,7 @@ import org.juseni.daytoday.resources.tag_market_place
 import org.juseni.daytoday.resources.tag_others
 import org.juseni.daytoday.resources.tag_public_transportation
 import org.juseni.daytoday.resources.tag_restaurant
+import org.juseni.daytoday.resources.tag_salary
 import org.juseni.daytoday.resources.tag_store
 import org.juseni.daytoday.resources.tag_supermarket
 
@@ -40,5 +46,8 @@ enum class Tags(val id: Int, val tagName: StringResource, val icon: DrawableReso
     HEALTH(9, Res.string.tag_health, Res.drawable.ic_health),
     PUBLIC_TRANSPORTATION(10, Res.string.tag_public_transportation, Res.drawable.ic_public_transport),
     RESTAURANT(11, Res.string.tag_restaurant, Res.drawable.ic_restaurant),
-    ATM(12, Res.string.tag_atm, Res.drawable.ic_atm)
+    ATM(12, Res.string.tag_atm, Res.drawable.ic_atm),
+    CAR(13, Res.string.tag_car, Res.drawable.ic_car),
+    SALARY(14, Res.string.tag_salary, Res.drawable.ic_salary),
+    COMMISSION(15, Res.string.tag_commission, Res.drawable.ic_commission),
 }

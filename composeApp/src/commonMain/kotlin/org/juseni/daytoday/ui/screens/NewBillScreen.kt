@@ -14,19 +14,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,27 +32,19 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.resources.Res
-import org.juseni.daytoday.resources.cancel
-import org.juseni.daytoday.resources.detail_date
-import org.juseni.daytoday.resources.new_bill_add_date
 import org.juseni.daytoday.resources.new_bill_add_tag
 import org.juseni.daytoday.resources.new_bill_amount
 import org.juseni.daytoday.resources.new_bill_description
 import org.juseni.daytoday.resources.new_bill_error
 import org.juseni.daytoday.resources.new_bill_go_to_montly_screen
 import org.juseni.daytoday.resources.new_bill_insert_new_bill
-import org.juseni.daytoday.resources.new_bill_modify_date
 import org.juseni.daytoday.resources.new_bill_modify_tag
 import org.juseni.daytoday.resources.new_bill_screen_info
 import org.juseni.daytoday.resources.new_bill_screen_title
 import org.juseni.daytoday.resources.new_bill_tag
-import org.juseni.daytoday.resources.ok
 import org.juseni.daytoday.resources.save
 import org.juseni.daytoday.ui.ScreenRoute
 import org.juseni.daytoday.ui.components.DateSection
@@ -69,7 +56,6 @@ import org.juseni.daytoday.ui.components.SavingProgressIndicator
 import org.juseni.daytoday.ui.components.Screen
 import org.juseni.daytoday.ui.viewmodels.NewBillScreenViewModel
 import org.juseni.daytoday.utils.Tags
-import org.juseni.daytoday.utils.toFormatString
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

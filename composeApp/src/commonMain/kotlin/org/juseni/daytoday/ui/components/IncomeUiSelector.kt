@@ -22,23 +22,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.domain.models.Apartment
+import org.juseni.daytoday.domain.models.Income
 import org.juseni.daytoday.resources.Res
+import org.juseni.daytoday.resources.detail_date
+import org.juseni.daytoday.resources.incomes_screen_amount
 import org.juseni.daytoday.resources.incomes_screen_apartment
-import org.juseni.daytoday.resources.new_apartment_is_direct
-import org.juseni.daytoday.resources.new_apartment_percentage
 import org.juseni.daytoday.resources.no_label
-import org.juseni.daytoday.resources.yes_label
+import org.juseni.daytoday.utils.formatDouble
+import org.juseni.daytoday.utils.toFormatString
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ApartmentsUiSelector(
+fun IncomeUiSelector(
+    incomes: List<Income>,
     apartments: List<Apartment>,
-    onApartmentSelected: (Apartment) -> Unit
+    onIncomeSelected: (Income) -> Unit,
 ) {
     val columnTitles = listOf(
+        Res.string.detail_date,
         Res.string.incomes_screen_apartment,
-        Res.string.new_apartment_percentage,
-        Res.string.new_apartment_is_direct
+        Res.string.incomes_screen_amount
     )
     Card(
         modifier = Modifier
@@ -68,10 +71,11 @@ fun ApartmentsUiSelector(
                     }
                 }
             }
-            items(apartments) { apartment ->
-                DetailItemApartment(
-                    apartment = apartment,
-                    onApartmentSelected = onApartmentSelected
+            items(incomes) { income ->
+                DetailItemIncome(
+                    income = income,
+                    apartment = apartments.firstOrNull { it.id == income.apartmentId },
+                    onIncomeSelected = onIncomeSelected
                 )
             }
         }
@@ -79,22 +83,21 @@ fun ApartmentsUiSelector(
 }
 
 @Composable
-fun DetailItemApartment(
-    apartment: Apartment,
-    onApartmentSelected: (Apartment) -> Unit
+fun DetailItemIncome(
+    income: Income,
+    apartment: Apartment?,
+    onIncomeSelected: (Income) -> Unit
 ) {
     val columnValues = listOf(
-        apartment.name.plus(" - ").plus(apartment.number),
-        apartment.percentage.toString().plus(" %"),
-        if (apartment.isDirect) {
-            stringResource(Res.string.yes_label)
-        } else stringResource(Res.string.no_label)
+        income.date.toFormatString(),
+        apartment?.name?.plus(" - ")?.plus(apartment.number) ?: stringResource(Res.string.no_label),
+        income.amount.formatDouble()
     )
     Row(
         modifier = Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth()
-            .clickable { onApartmentSelected(apartment) },
+            .clickable { onIncomeSelected(income) },
     ) {
         columnValues.forEach { value ->
             Text(

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import org.juseni.daytoday.utils.formatDouble
 import org.juseni.daytoday.utils.formatDoubleAmount
 import org.juseni.daytoday.utils.formatToDouble
 
@@ -35,6 +36,7 @@ fun EditTextComponent(
     isAmount: Boolean = false,
     amountToShow: Double = 0.0,
     textToShowInEditBox: String = "",
+    disableEditTextField: Boolean = false,
     onValueChange: (String) -> Unit = {},
     onAmountChange: (Double) -> Unit = {},
     modifier: Modifier = Modifier
@@ -45,6 +47,9 @@ fun EditTextComponent(
     if (isAmount) {
         if (amountToShow == 0.0) {
             textState = TextFieldValue("")
+        }
+        if (disableEditTextField) {
+            textState = TextFieldValue(amountToShow.formatDouble())
         }
     } else {
         if (textToShowInEditBox.isEmpty()) {
@@ -65,6 +70,7 @@ fun EditTextComponent(
         )
         TextField(
             modifier = Modifier.weight(2f),
+            enabled = !disableEditTextField,
             value = textState,
             onValueChange = { input ->
                 if (isAmount) {
@@ -83,7 +89,7 @@ fun EditTextComponent(
                 }
             },
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = if (isAmount) KeyboardType.Number else KeyboardType.Text,
+                keyboardType = if (isAmount) KeyboardType.Decimal else KeyboardType.Text,
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),

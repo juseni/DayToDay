@@ -24,7 +24,8 @@ class ConsolidatedScreenViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<ConsolidatedScreenUiState>(ConsolidatedScreenUiState.Loading)
+    private val _uiState =
+        MutableStateFlow<ConsolidatedScreenUiState>(ConsolidatedScreenUiState.Loading)
     val uiState: StateFlow<ConsolidatedScreenUiState> = _uiState.asStateFlow()
 
     private val _incomes = MutableStateFlow<List<Income>>(emptyList())
@@ -34,10 +35,12 @@ class ConsolidatedScreenViewModel(
         viewModelScope.launch {
             userRepository.getUser().conflate().collect { user ->
                 if (user != null) {
-                    if (user.hasIncomeExpenses) {
-                        networkRepository.getIncomes(monthSelected, yearSelected).conflate().collectLatest { incomes ->
-                            _incomes.value = incomes
-                        }
+                    networkRepository.getIncomes(
+                        monthSelected,
+                        yearSelected,
+                        user.id
+                    ).conflate().collectLatest { incomes ->
+                        _incomes.value = incomes
                     }
                     networkRepository.getBillsByMonth(monthSelected, yearSelected, user.id)
                         .conflate()

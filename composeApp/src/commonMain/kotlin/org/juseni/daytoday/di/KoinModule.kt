@@ -18,10 +18,12 @@ import org.juseni.daytoday.data.sharedpreferences.repositories.DataStoreReposito
 import org.juseni.daytoday.domain.repositories.DataStoreRepository
 import org.juseni.daytoday.domain.repositories.NetworkRepository
 import org.juseni.daytoday.domain.repositories.UserRepository
-import org.juseni.daytoday.ui.viewmodels.HomeScreenViewModel
-import org.juseni.daytoday.ui.viewmodels.LoginScreenViewModel
 import org.juseni.daytoday.ui.viewmodels.ConsolidatedScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.ExpensesScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.HomeScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.IncomeDetailScreenViewModel
 import org.juseni.daytoday.ui.viewmodels.IncomesScreenViewModel
+import org.juseni.daytoday.ui.viewmodels.LoginScreenViewModel
 import org.juseni.daytoday.ui.viewmodels.NewApartmentScreenViewModel
 import org.juseni.daytoday.ui.viewmodels.NewBillScreenViewModel
 import org.koin.core.KoinApplication
@@ -52,7 +54,8 @@ val sharedModule = module {
     viewModelOf(::NewBillScreenViewModel)
     viewModelOf(::NewApartmentScreenViewModel)
     viewModelOf(::IncomesScreenViewModel)
-
+    viewModelOf(::ExpensesScreenViewModel)
+    viewModelOf(::IncomeDetailScreenViewModel)
 }
 
 val networkModule = module {

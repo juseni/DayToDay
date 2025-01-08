@@ -60,7 +60,7 @@ fun DateSection(
                             onDateSelected.invoke(
                                 Instant
                                     .fromEpochMilliseconds(date)
-                                    .toLocalDateTime(TimeZone.currentSystemDefault())
+                                    .toLocalDateTime(TimeZone.UTC)
                                     .date
                             )
                         }
