@@ -303,7 +303,7 @@ fun TagSection(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(Tags.entries) { tag ->
+                        items(Tags.entries.filter { it.isVisible }) { tag ->
                             LabelledIconTag(
                                 iconRes = tag.icon,
                                 tagName = tag.tagName,

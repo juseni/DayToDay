@@ -1,9 +1,17 @@
 package org.juseni.daytoday.ui.screens
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -15,9 +23,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.juseni.daytoday.resources.Res
 import org.juseni.daytoday.resources.app_name
@@ -25,6 +35,7 @@ import org.juseni.daytoday.resources.consolidated
 import org.juseni.daytoday.resources.expenses
 import org.juseni.daytoday.resources.general_error
 import org.juseni.daytoday.resources.incomes
+import org.juseni.daytoday.resources.logo_we_home
 import org.juseni.daytoday.resources.new_apartment
 import org.juseni.daytoday.resources.new_bill
 import org.juseni.daytoday.ui.ScreenRoute
@@ -65,6 +76,7 @@ fun HomeScreen(
                     }
                 )
             }
+
             is HomeScreenUiState.Error -> ErrorScreenComponent(
                 errorMessage = stringResource(Res.string.general_error),
                 navController = navController
@@ -93,39 +105,68 @@ fun HomeScreenContent(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(
-                16.dp,
-                alignment = Alignment.CenterVertically
-            ),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(innerPadding)
+                .padding(30.dp),
         ) {
-            if (hasBills) {
-                ItemClick(
-                    text = stringResource(Res.string.consolidated),
-                    onClick = homeScreenCallbacks.onConsolidatedClicked
-                )
-                ItemClick(
-                    text = stringResource(Res.string.new_bill),
-                    onClick = homeScreenCallbacks.onNewBillClicked
-                )
-                ItemClick(
-                    text = stringResource(Res.string.incomes),
-                    onClick = homeScreenCallbacks.onIncomesClicked
+            Card(
+                modifier = Modifier
+                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                    .align(Alignment.TopCenter)
+                    .size(height = 100.dp, width = 130.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+            ) {
+                Image(
+                    modifier = Modifier.size(130.dp)
+                        .padding(4.dp),
+                    painter = painterResource(Res.drawable.logo_we_home),
+                    contentDescription = "Logo",
+                    alignment = Alignment.Center
                 )
             }
-            if (hasIncomeExpenses) {
-                ItemClick(
-                    text = stringResource(Res.string.expenses),
-                    onClick = homeScreenCallbacks.onExpensesClicked
-                )
-                ItemClick(
-                    text = stringResource(Res.string.new_apartment),
-                    onClick = homeScreenCallbacks.onNewApartmentClicked
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .align(Alignment.Center),
+                verticalArrangement = Arrangement.spacedBy(
+                    16.dp,
+                    alignment = Alignment.CenterVertically
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (hasBills) {
+                    ItemClick(
+                        text = stringResource(Res.string.consolidated),
+                        onClick = homeScreenCallbacks.onConsolidatedClicked
+                    )
+                    ItemClick(
+                        text = stringResource(Res.string.new_bill),
+                        onClick = homeScreenCallbacks.onNewBillClicked
+                    )
+                    ItemClick(
+                        text = stringResource(Res.string.incomes),
+                        onClick = homeScreenCallbacks.onIncomesClicked
+                    )
+                }
+                if (hasIncomeExpenses) {
+                    ItemClick(
+                        text = stringResource(Res.string.expenses),
+                        onClick = homeScreenCallbacks.onExpensesClicked
+                    )
+                    ItemClick(
+                        text = stringResource(Res.string.new_apartment),
+                        onClick = homeScreenCallbacks.onNewApartmentClicked
+                    )
+                }
             }
         }
     }
