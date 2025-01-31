@@ -1,5 +1,8 @@
 package org.juseni.daytoday.di
 
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.createSupabaseClient
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -82,6 +85,17 @@ val networkModule = module {
     }
 }
 
+val supabaseModule: Module = module {
+    single<SupabaseClient> {
+        createSupabaseClient(
+            supabaseUrl = BuildConfig.URL_HOST,
+            supabaseKey = BuildConfig.API_KEY
+        ) {
+            install(Auth)
+        }
+    }
+}
+
 val appModule = module {
     single(named("apiKey")) { BuildConfig.API_KEY }
     single { BuildConfig.URL_HOST }
@@ -93,6 +107,6 @@ fun initializeKoin(
 ) {
     startKoin {
         config?.invoke(this)
-        modules(networkModule, targetModule, sharedModule, preferenceModule, appModule)
+        modules(networkModule, targetModule, sharedModule, preferenceModule, appModule, supabaseModule)
     }
 }

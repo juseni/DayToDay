@@ -7,7 +7,7 @@
     <string name="sing_up_information">New user?</string>
     <string name="sing_up">Sing up</string>
     <string name="login">Login</string>
-    <string name="user">User</string>
+    <string name="user">e-mail</string>
     <string name="password">Password</string>
     <string name="end_session">End session</string>"
     <string name="welcome_information">Fill in the information below</string>
@@ -48,7 +48,7 @@
     <string name="tag_store">Store</string>
     <string name="tag_market_place">Public market</string>
     <string name="tag_others">Others</string>
-    <string name="tag_epm">Public services</string>
+    <string name="tag_epm">Utilities</string>
     <string name="tag_cellphone">Cellphone</string>
     <string name="tag_internet">Internet</string>
     <string name="tag_credit_card">Credit card</string>
@@ -64,6 +64,7 @@
     <string name="tag_salary">Salary</string>
     <string name="tag_commission">Commission</string>
     <string name="tag_car">Car</string>
+    <string name="tag_credit_loan">Credit / Loan</string>
 
 <!-- New bill screen-->
     <string name="new_bill_screen_title">New bill</string>

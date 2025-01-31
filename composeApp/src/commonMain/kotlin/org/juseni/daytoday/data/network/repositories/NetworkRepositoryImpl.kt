@@ -25,6 +25,7 @@ import org.juseni.daytoday.domain.models.User
 import org.juseni.daytoday.domain.models.toBillRemote
 import org.juseni.daytoday.domain.models.toIncomeRemote
 import org.juseni.daytoday.domain.repositories.NetworkRepository
+import org.juseni.daytoday.utils.encrypt
 
 class NetworkRepositoryImpl(
     private val apiService: ApiService,

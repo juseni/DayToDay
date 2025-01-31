@@ -10,18 +10,7 @@ fun HttpStatusCode.isSuccessful() = value in 200..299
 
 fun LocalDate.toFormatString(): String = "${dayOfMonth}/${monthNumber}/${year}"
 
-fun Double.formatAmount(): String  {
-    val parts = this.toString().split(".")
-    val integerPart = parts[0]
-    val decimalPart = if (parts.size > 1) "." + parts[1] else ""
-
-    // Add thousands separator
-    val formattedIntegerPart = integerPart.reversed().chunked(3).joinToString(",").reversed()
-
-    return formattedIntegerPart + decimalPart.take(2)
-}
-
-fun String.formatDoubleAmount(): String  {
+fun String.formatDoubleAmount(): String {
     val parts = this.split(".")
     val integerPart = parts[0]
     val decimalPart = if (parts.size > 1) "." + parts[1] else ""

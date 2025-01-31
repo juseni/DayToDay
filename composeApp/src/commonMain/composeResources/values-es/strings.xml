@@ -7,7 +7,7 @@
     <string name="sing_up_information">Nuevo usuario?</string>
     <string name="sing_up">Crear cuenta</string>
     <string name="login">Iniciar sesión</string>
-    <string name="user">Usuario</string>
+    <string name="user">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="end_session">Cerrar sesión</string>"
     <string name="welcome_information">Llena los datos solicitados</string>
@@ -64,6 +64,7 @@
     <string name="tag_salary">Salario</string>
     <string name="tag_commission">Comisión</string>
     <string name="tag_car">Automóvil</string>
+    <string name="tag_credit_loan">Crédito / Préstamo</string>
 
     <!-- New bill screen-->
     <string name="new_bill_screen_title">Nueva Factura</string>

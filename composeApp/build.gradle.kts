@@ -39,6 +39,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.core.splashscreen)
+            implementation(libs.cryptography.provider)
         }
 
         commonMain.dependencies {
@@ -63,10 +64,13 @@ kotlin {
             implementation(libs.ktor.serialization.json)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.cryptography.core)
+            implementation(libs.supabase.client)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.cryptography.apple)
         }
     }
     task("testClasses")

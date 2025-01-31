@@ -1,5 +1,8 @@
 package org.juseni.daytoday.data.network
 
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -26,7 +29,10 @@ private const val RENT_APARTMENT_TYPES_URL = "/rest/v1/rent_type"
 private const val INCOME_URL = "/rest/v1/incomes"
 private const val GET_INCOME_URL = "/rest/v1/rpc/get_incomes_by_month?"
 
-class ApiService(private val client: HttpClient) {
+class ApiService(
+    private val client: HttpClient,
+    private val supabaseClient: SupabaseClient
+) {
 
     suspend fun singUp(
         user: String,
@@ -41,11 +47,19 @@ class ApiService(private val client: HttpClient) {
                 hasBills = hasBills,
                 hasIncomeExpenses = hasIncomesExpenses
             )
-            val httResponse = client.post(SING_UP_URL) {
-                contentType(ContentType.Application.Json)
-                setBody(newUser)
+
+            val userResponse = supabaseClient.auth.signUpWith(provider = Email) {
+                email = user
+                this.password = password
             }
-            httResponse.status.isSuccessful()
+
+            userResponse != null
+
+//            val httResponse = client.post(SING_UP_URL) {
+//                contentType(ContentType.Application.Json)
+//                setBody(newUser)
+//            }
+//            httResponse.status.isSuccessful()
         } catch (ex: Exception) {
             false
         }
@@ -53,14 +67,21 @@ class ApiService(private val client: HttpClient) {
 
     suspend fun login(user: String, password: String): UserRemote? = withContext(Dispatchers.IO) {
         try {
-            val httResponse =
-                client.get(LOGIN_URL.plus("input_user=$user&input_password=$password"))
-            if (httResponse.status.isSuccessful()) {
-                val bodyResponse = httResponse.body<List<UserRemote>>()
-                bodyResponse.firstOrNull()
-            } else {
-                null
+//            val httResponse =
+//                client.get(LOGIN_URL.plus("input_user=$user&input_password=$password"))
+//            if (httResponse.status.isSuccessful()) {
+//                val bodyResponse = httResponse.body<List<UserRemote>>()
+//                bodyResponse.firstOrNull()
+//            } else {
+//                null
+//            }
+            supabaseClient.auth.signInWith(provider = Email) {
+                email = user
+                this.password = password
             }
+
+            val userAuth = supabaseClient.auth.retrieveUserForCurrentSession(updateSession = true)
+            null
         } catch (ex: Exception) {
             null
         }

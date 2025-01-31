@@ -8,6 +8,7 @@ import org.juseni.daytoday.resources.ic_car
 import org.juseni.daytoday.resources.ic_cellphone
 import org.juseni.daytoday.resources.ic_commission
 import org.juseni.daytoday.resources.ic_credit_card
+import org.juseni.daytoday.resources.ic_credit_loan
 import org.juseni.daytoday.resources.ic_epm
 import org.juseni.daytoday.resources.ic_health
 import org.juseni.daytoday.resources.ic_internet
@@ -23,6 +24,7 @@ import org.juseni.daytoday.resources.tag_car
 import org.juseni.daytoday.resources.tag_cellphone
 import org.juseni.daytoday.resources.tag_commission
 import org.juseni.daytoday.resources.tag_credit_card
+import org.juseni.daytoday.resources.tag_credit_loan
 import org.juseni.daytoday.resources.tag_epm
 import org.juseni.daytoday.resources.tag_health
 import org.juseni.daytoday.resources.tag_internet
@@ -55,4 +57,5 @@ enum class Tags(
     CAR(13, Res.string.tag_car, Res.drawable.ic_car, true),
     SALARY(14, Res.string.tag_salary, Res.drawable.ic_salary, false),
     COMMISSION(15, Res.string.tag_commission, Res.drawable.ic_commission, false),
+    CREDIT_LOAN(16, Res.string.tag_credit_loan, Res.drawable.ic_credit_loan, true),
 }
