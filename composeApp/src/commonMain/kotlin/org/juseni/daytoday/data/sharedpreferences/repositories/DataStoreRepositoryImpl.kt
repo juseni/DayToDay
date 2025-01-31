@@ -13,7 +13,7 @@ import org.juseni.daytoday.domain.repositories.DataStoreRepository
  */
 class DataStoreRepositoryImpl(
     private val dataStore: DataStore<Preferences>
-): DataStoreRepository {
+) : DataStoreRepository {
 
     private val rememberMe = booleanPreferencesKey("remember_me")
     private val autoLogging = booleanPreferencesKey("auto_logging")

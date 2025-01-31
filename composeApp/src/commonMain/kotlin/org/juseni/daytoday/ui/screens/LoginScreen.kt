@@ -178,7 +178,10 @@ fun LoginContent(
                     onRememberMeChange = onRememberMeChange,
                     onAutoLoggingChange = onAutoLoggingChange,
                     onClick = {
-                        onLoginClicked(it.user, it.password)
+                        onLoginClicked(
+                            it.user,
+                            it.password
+                        )
                     }
                 )
             }
@@ -199,8 +202,8 @@ fun LoginContent(
                     isSingUp = true,
                     onRememberMeChange = onRememberMeChange,
                     onAutoLoggingChange = onAutoLoggingChange,
-                    onClick = {
-                        onSingUpClicked(it)
+                    onClick = { user ->
+                        onSingUpClicked(user)
                     }
                 )
             }

@@ -17,7 +17,7 @@ import org.juseni.daytoday.utils.isSuccessful
 
 private const val CURRENCY_CONVERTER_URL = "/v1/currencies/usd.json"
 
-class CurrencyApiServer(private val client: HttpClient) {
+class CurrencyApiServer {
     private val clientNew by lazy {
         HttpClient {
             install(ContentNegotiation) {
